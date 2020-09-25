@@ -11,7 +11,7 @@ client = Client(ACCOUNT_SID, AUTH_TOKEN)
 
 def send_bulk_sms(numbers, body):
     bindings = list(map(lambda number: json.dumps({'binding_type': 'sms', 'address': number}), numbers))
-    print("=====> To Bindings :>", bindings, "<: =====")
+    #print("=====> To Bindings :>", bindings, "<: =====")
     notification = client.notify.services(NOTIFY_SERVICE_SID).notifications.create(
         to_binding=bindings,
         body=body
