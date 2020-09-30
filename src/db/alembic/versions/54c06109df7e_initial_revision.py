@@ -27,7 +27,7 @@ def upgrade():
     op.create_table('number',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('group_id', sa.Integer(), nullable=True),
-    sa.Column('number', sa.Integer(), nullable=False),
+    sa.Column('number', sa.String(), nullable=False),
     sa.ForeignKeyConstraint(['group_id'], ['group.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('number')
