@@ -32,7 +32,7 @@ class Number(Base):
     id = Column(Integer, primary_key=True)
     group_id = Column(Integer, ForeignKey("group.id"))
     number = Column(Integer, unique=True, nullable=False)
-    group = relationship("Group", back_populates="number", cascade="all, delete")
+    group = relationship("Group", back_populates="numbers", cascade="all, delete")
 
 
 def session_creator() -> Session:
