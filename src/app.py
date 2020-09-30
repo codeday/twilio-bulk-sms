@@ -4,8 +4,6 @@ from flask import Flask, request
 from flask_cors import CORS
 
 from db.models import session_creator, Group, Number
-from utils.request import validate_body
-from utils.response import response, error_response
 from utils.sms import send_bulk_sms
 
 app = Flask(__name__)
@@ -22,10 +20,12 @@ def message_audience():
     group = session.query(Group).filter_by(id = body['group_id']).first()
     if group is not None:
         send_bulk_sms(group.to_dict()['numbers'], body['message'])
+        return 'ok'
     else:
         session.rollback()
         session.close()
         return 'Group not found'
+
 
 @app.route('/api/getGroups', methods=['GET'])
 def get_groups():
@@ -63,6 +63,7 @@ def add_to_group():
         group.numbers.append(Number(number=body['number']))
         session.commit()
         session.close()
+        return 'ok'
     else:
         session.rollback()
         session.close()
