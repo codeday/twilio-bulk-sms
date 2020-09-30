@@ -38,7 +38,7 @@ class Number(Base):
     __tablename__ = "number"
     id = Column(Integer, primary_key=True)
     group_id = Column(Integer, ForeignKey("group.id"))
-    number = Column(Integer, unique=True, nullable=False)
+    number = Column(String, unique=True, nullable=False)
     group = relationship("Group", back_populates="numbers", cascade="all, delete")
 
     def __str__(self):
