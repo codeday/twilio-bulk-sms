@@ -102,3 +102,13 @@ Request body:
         'number': '+81814802108'
     }
 #### POST  /api/removeFromGroup
+Required scope: `sms:write`
+
+Removes a `number` from a group by `group_id`
+
+Request body:
+
+    {
+        'group_id': 2,
+        'number': '+81814802108'
+    }
