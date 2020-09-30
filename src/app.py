@@ -26,7 +26,9 @@ def message_audience():
 @app.route('/api/getGroups', methods=['GET'])
 def get_groups():
     session = session_creator()
-    return json.dumps(session.query(Group).all())
+    groups = json.dumps(session.query(Group).all())
+    session.close()
+    return groups
 
 
 @app.route('/api/createGroup', methods=['POST'])
