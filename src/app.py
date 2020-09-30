@@ -173,7 +173,7 @@ def get_group_name():
     session = session_creator()
     group = session.query(Group).filter_by(id = body['group_id']).first()
     if group is not None:
-        return str(group.group_name)
+        return {'name': str(group.group_name)}
     else:
         return 'no group found'
 
