@@ -6,4 +6,4 @@ RUN pip install -r requirements.txt
 COPY src /app/src
 
 WORKDIR /app
-CMD ["python","app.py"]
+CMD ["python","src/app.py"]
