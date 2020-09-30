@@ -16,19 +16,23 @@ CORS(app)
 @app.route('/api/message', methods=['POST'])
 def message_audience():
     body = request.get_json()
-    status, missing_field = validate_body(body, ['message', 'phones'])
-    if not status:
-        return error_response(f'{missing_field} is missing')
-    send_bulk_sms(body['phones'], body['message'])
-    return response(True, 'Success', None)
-
+    assert 'message' in body
+    assert 'group_id' in body
+    session = session_creator()
+    group = session.query(Group).filter_by(id = body['group_id']).first()
+    if group is not None:
+        send_bulk_sms(group.to_dict()['numbers'], body['message'])
+    else:
+        session.rollback()
+        session.close()
+        return 'Group not found'
 
 @app.route('/api/getGroups', methods=['GET'])
 def get_groups():
     session = session_creator()
-    groups = json.dumps(session.query(Group).all())
+    groups = [g.to_dict() for g in session.query(Group).all()]
     session.close()
-    return groups
+    return json.dumps(groups)
 
 
 @app.route('/api/createGroup', methods=['POST'])

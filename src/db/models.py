@@ -26,6 +26,13 @@ class Group(Base):
     group_name = Column(String, nullable=False, unique=True)
     numbers = relationship("Number", back_populates="group", cascade="all, delete")
 
+    def to_dict(self):
+        return {
+            'name':self.group_name,
+            'id': self.id,
+            'numbers':[str(number) for number in self.numbers]
+        }
+
 
 class Number(Base):
     __tablename__ = "number"
@@ -34,6 +41,8 @@ class Number(Base):
     number = Column(Integer, unique=True, nullable=False)
     group = relationship("Group", back_populates="numbers", cascade="all, delete")
 
+    def __str__(self):
+        return str(self.number)
 
 def session_creator() -> Session:
     session = sessionmaker(bind=engine)
