@@ -1,6 +1,6 @@
 import json
 from functools import wraps
-
+import phonenumbers
 from flask import Flask, request, jsonify, _request_ctx_stack
 from flask_cors import CORS
 from flask_cors import cross_origin
@@ -205,12 +205,14 @@ def add_to_group():
     body = request.get_json()
     assert 'group_id' in body
     assert 'number' in body
+    number = phonenumbers.parse(body['number'], "US")
+    assert phonenumbers.is_possible_number(number) == True
+    assert phonenumbers.is_valid_number(number) == True
     session = session_creator()
-    # Todo: verify number is number
     group = session.query(Group).filter_by(id = body['group_id']).first()
     if group is not None:
         session.add(group)
-        group.numbers.append(Number(number=body['number']))
+        group.numbers.append(Number(number=phonenumbers.format_number(number, phonenumbers.PhoneNumberFormat.E164)))
         session.commit()
         session.close()
         return 'ok'
